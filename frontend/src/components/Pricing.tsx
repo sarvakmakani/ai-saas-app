@@ -80,6 +80,7 @@ const Pricing = () => {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
 
   return (
+   <div className="flex justify-center items-center flex-row p-15">
     <div className="flex flex-col">
       <main>
         <section className="">
@@ -201,6 +202,7 @@ const Pricing = () => {
         </section>
       </main>
     </div>
+  </div>
   );
 };
 

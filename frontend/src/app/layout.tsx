@@ -2,9 +2,11 @@
 import type { Metadata } from "next";
 import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import Navbar from "@/components/navbar";
-import Script from 'next/script';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+import { UserProvider } from "./context/userContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,12 +34,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-  <ClerkProvider>
     <html lang="en">
       <head>
        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -46,18 +47,23 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${robotoMono.variable} antialiased`}
       >
-        
-        <Navbar />
+        <UserProvider>
         {children}
-      
+          <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      </UserProvider>
 
       </body>
-       <Script
-          type="module"
-          src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js"
-          strategy="afterInteractive"
-        />
     </html>
-    </ClerkProvider>
   );
 }
