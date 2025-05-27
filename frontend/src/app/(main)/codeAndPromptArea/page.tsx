@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import WorkspaceNavbar from '@/components/WorkspaceNavbar';
 import { useContext } from 'react';
 import UserContext from '@/app/context/userContext';
@@ -22,10 +22,13 @@ interface Session {
 
 const CodeAndPromptArea = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionIdFromUrl = searchParams.get('sessionId');
   const { user } = useContext(UserContext);
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentSession, setCurrentSession] = useState<Session | null>(null);
+  const [codeFiles, setCodeFiles] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -52,15 +55,16 @@ const CodeAndPromptArea = () => {
     });
 
     // Fetch messages
-    fetchMessages(token);
-  }, [router]);
+    fetchMessages(token, sessionIdFromUrl);
+  }, [router, sessionIdFromUrl]);
 
-  const fetchMessages = async (token: string) => {
+  const fetchMessages = async (token: string, sessionId?: string | null) => {
     try {
       const response = await axios.get('http://localhost:5000/messages/messages', {
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        params: sessionId ? { sessionId } : {}
       });
 
       console.log('Fetched sessions:', response.data);
@@ -78,13 +82,10 @@ const CodeAndPromptArea = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
-
     setIsLoading(true);
     const token = localStorage.getItem('token');
-
     try {
-      const sessionId = currentSession?._id;
-      
+      const sessionId = sessionIdFromUrl || currentSession?._id;
       const response = await axios.post('http://localhost:5000/messages/messages',
         { 
           content: prompt,
@@ -96,12 +97,15 @@ const CodeAndPromptArea = () => {
           }
         }
       );
-
       if (response.status === 200) {
         if (token) {
-          await fetchMessages(token);
+          await fetchMessages(token, sessionIdFromUrl);
         }
         setPrompt('');
+        if (response.data.files && Object.keys(response.data.files).length) {
+          console.log('Received files from backend:', response.data.files);
+          setCodeFiles(response.data.files);
+        }
       }
     } catch (error) {
       console.error('Error submitting prompt:', error);
@@ -224,9 +228,9 @@ const CodeAndPromptArea = () => {
         </div>
 
         {/* Code Display Area */}
-       
-            <CodeView  />
-          
+        <div className="flex-1 h-full custom-scrollbar bg-[#0a0a0a]">
+          <CodeView files={codeFiles} />
+        </div>
       </div>
 
       <style jsx global>{`

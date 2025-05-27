@@ -61,7 +61,7 @@ const WorkspaceSearch = () => {
       if (response.status === 200) {
         console.log(response.data);
         setMessages('');
-        router.push('/codeAndPromptArea');
+        router.push(`/codeAndPromptArea?sessionId=${response.data.sessionId}`);
       }
     } catch (err) {
       console.log("error", err);
@@ -90,14 +90,13 @@ const WorkspaceSearch = () => {
       </p>
 
       {/* Prompt Box */}
-      <form onSubmit={submitHandler} className="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-6 w-full max-w-2xl">
+      <form onSubmit={submitHandler} className="bg-black bg-opacity-60 backdrop-blur-md rounded-xl p-6 w-full max-w-2xl shadow-2xl">
         <textarea
           value={messages}
           onChange={(e) => setMessages(e.target.value)}
-          placeholder="Ask SaaSFlow..."
-          className="w-full h-24 bg-transparent outline-none text-white text-sm resize-none placeholder-gray-400"
+          placeholder="Describe your app idea or feature..."
+          className="w-full h-24 bg-[#18181b] outline-none text-white text-base resize-none placeholder-gray-400 rounded-lg p-4 border border-gray-700 focus:ring-2 focus:ring-purple-500 shadow-md transition-all duration-200"
         ></textarea>
-
         <div className="flex items-center justify-between mt-4 text-sm">
           <div className="text-white font-medium flex items-center space-x-2">
             <span className="material-icons text-base">attach_file</span>
@@ -105,10 +104,10 @@ const WorkspaceSearch = () => {
           </div>
           <button 
             type="submit"
-            
-            className="flex items-center space-x-1 bg-gray-800 text-white px-2 py-2 rounded-full hover:bg-gray-700 cursor-pointer"
+            className="flex items-center space-x-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-5 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 shadow-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400"
           >
             <span className="material-icons text-base">arrow_upward</span>
+            <span>Generate</span>
           </button> 
         </div>
       </form>

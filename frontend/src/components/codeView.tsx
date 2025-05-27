@@ -8,8 +8,23 @@ import {
   SandpackFileExplorer,
 } from "@codesandbox/sandpack-react";
 
-const CodeView = () => {
+const defaultFiles = {
+  "/index.js": `import React from "react";\nimport { createRoot } from "react-dom/client";\nimport App from "./App";\nimport "./styles.css";\n\nconst root = createRoot(document.getElementById("root"));\nroot.render(<App />);`,
+  "/App.js": `export default function App() {\n  return <h1 className=\"text-3xl font-bold underline text-purple-600\">Hello Tailwind + React!</h1>;\n}`,
+  "/index.html": `<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>React + Tailwind</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n  </body>\n</html>`,
+  "/tailwind.config.js": `module.exports = {\n  content: [\"./src/**/*.{js,jsx,ts,tsx}\", \"./index.html\"],\n  theme: {\n    extend: {},\n  },\n  plugins: [],\n};`,
+  "/postcss.config.js": `module.exports = {\n  plugins: {\n    tailwindcss: {},\n    autoprefixer: {},\n  },\n};`,
+  "/styles.css": `@tailwind base;\n@tailwind components;\n@tailwind utilities;` 
+};
+
+interface CodeViewProps {
+  files?: Record<string, string>;
+}
+
+const CodeView: React.FC<CodeViewProps> = ({ files }) => {
   const [CodeViewOpen, setCodeViewOpen] = useState(true);
+
+  console.log('CodeView received files:', files);
 
   return (
     <div className="flex-1 bg-opacity-60 backdrop-blur-md rounded-xl p-0 flex flex-col shadow-lg h-full">
@@ -66,14 +81,7 @@ const CodeView = () => {
               "@mui/icons-material": "latest"
             },
           }}
-          files={{
-            "/index.js": `import React from "react";\nimport { createRoot } from "react-dom/client";\nimport App from "./App";\nimport "./styles.css";\n\nconst root = createRoot(document.getElementById("root"));\nroot.render(<App />);`,
-            "/App.js": `export default function App() {\n  return <h1 className=\"text-3xl font-bold underline text-purple-600\">Hello Tailwind + React!</h1>;\n}`,
-            "/index.html": `<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>React + Tailwind</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n  </body>\n</html>`,
-            "/tailwind.config.js": `module.exports = {\n  content: [\"./src/**/*.{js,jsx,ts,tsx}\", \"./index.html\"],\n  theme: {\n    extend: {},\n  },\n  plugins: [],\n};`,
-            "/postcss.config.js": `module.exports = {\n  plugins: {\n    tailwindcss: {},\n    autoprefixer: {},\n  },\n};`,
-            "/styles.css": `@tailwind base;\n@tailwind components;\n@tailwind utilities;` 
-          }}
+          files={Object.keys(files || {}).length ? files : defaultFiles}
         >
           <SandpackLayout style={{ height: "80vh" }}>
             {CodeViewOpen ? (
