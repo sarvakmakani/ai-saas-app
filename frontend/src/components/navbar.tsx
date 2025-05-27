@@ -1,4 +1,4 @@
-import React, { useContext} from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
 import UserContext from '@/app/context/userContext'
@@ -8,8 +8,42 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
     const {setUser } = useContext(UserContext)
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState<string | null>(null);
+    const [authButtons, setAuthButtons] = useState<React.ReactNode>(null);
     
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        const storedToken = localStorage.getItem('token');
+        setToken(storedToken);
+      }
+    }, []); 
+    
+    useEffect(() => {
+      if (token) {
+        setAuthButtons((
+          <div className="flex space-x-40">
+            <Button
+              style={{ cursor: 'pointer' }}
+              className="hover:bg-[#000000]"
+              onClick={handleSubmit}
+            >
+              Logout
+            </Button>
+          </div>
+        ));
+      } else {
+        setAuthButtons((
+          <>
+            <div className="flex items-center space-x-4">
+              <Link  href="/signin"><Button style={{ cursor: 'pointer' }}  className='hover:bg-[#000000] bg-gray-900 '>Sign In</Button></Link>
+              <Link href="/signup"><Button style={{ cursor: 'pointer' }} className='bg-gradient-to-r from-purple-400 to-pink-500'>Get Started</Button></Link>
+            </div>
+          </>
+        ));
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token]); // Rerun when token changes
+
     const handleSubmit= async(e:React.FormEvent)=>{
       e.preventDefault();
       console.log(token);
@@ -22,7 +56,10 @@ const Navbar = () => {
       });
       console.log(response.data);
       if(response.status === 200){
-        localStorage.removeItem('token');
+        // Wrap localStorage access in a browser check
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token');
+        }
         setUser({
           fullName: {
             firstName: '',
@@ -35,6 +72,7 @@ const Navbar = () => {
           otp_expiry: ''
         });
         toast.success('Logged out successfully');
+        setToken(null); // Update token state after logout
       }
       else{
         toast.error('Failed to logout');
@@ -44,37 +82,13 @@ const Navbar = () => {
     toast.error('Failed to logout'+err);
   }
 }
-let authButtons;
-
-if (token) {
-  authButtons = (
- <div className="flex space-x-40">
-    <Button
-      style={{ cursor: 'pointer' }}
-      className="hover:bg-[#000000]"
-      onClick={handleSubmit}
-    >
-      Logout
-    </Button>
-  </div>
-  );
-} else {
-  authButtons = (
-    <>
-    <div className="flex items-center space-x-4">
-      <Link  href="/signin"><Button style={{ cursor: 'pointer' }}  className='hover:bg-[#000000] '>Sign In</Button></Link>
-      <Link href="/signup"><Button style={{ cursor: 'pointer' }} className='bg-[#3818d6] hover:bg-[#2f14b3]'>Get Started</Button></Link>
-    </div>
-    </>
-  );
-}
 
 
   return (
 
     <nav className="flex justify-around items-center p-6 bg-transparent text-white top-0 left-0 w-full fixed z-50 bg-dark-500/80 backdrop-blur-lg shadow-md">
       <div className="flex items-center">
-        <Link href="/"><h1 className="text-3xl font-bold text-[#3818d6]">SaaSFlow</h1></Link>
+        <Link href="/"><h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">SaaSFlow</h1></Link>
       </div>
       
       <div className="flex space-x-6 w-120 justify-around items-center ">
@@ -82,7 +96,7 @@ if (token) {
         <Link href="/about" className="text-gray-200 hover:text-white ">About</Link>
         <Link href="/pricing"  className="text-gray-200 hover:text-white ">Pricing</Link>
         <Link href="/docs"  className="text-gray-200 hover:text-white ">Docs</Link> 
-         <Link href="/playground" className="text-gray-200 hover:text-white ">Playground</Link>
+         <Link href="/workspace" className="text-gray-200 hover:text-white ">Workspace</Link>
       </div>
       
         {authButtons}

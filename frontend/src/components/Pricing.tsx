@@ -86,7 +86,7 @@ const Pricing = () => {
         <section className="">
           <div className="container mx-auto">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-500">
+              <h1 className="text-4xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 ">
                 Simple, transparent pricing
               </h1>
               <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
@@ -98,7 +98,7 @@ const Pricing = () => {
                   className={cn(
                     "px-5 py-2 rounded-full transition-all font-semibold",
                     billingCycle === "monthly"
-                      ? "text-white bg-gradient-to-r from-[#3818d6] to-[#a084f9] shadow-md"
+                      ? "text-white bg-gradient-to-r from-purple-400 to-pink-500  shadow-md"
                       : "text-gray-400 hover:text-white"
                   )}
                   onClick={() => setBillingCycle("monthly")}

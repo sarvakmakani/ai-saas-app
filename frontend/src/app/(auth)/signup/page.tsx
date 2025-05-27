@@ -56,9 +56,7 @@ const Signup = () => {
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
       console.log("context",user);
-      setTimeout(() => {
       router.push(`/otpVerify`);
-    },3000);
 
     }else{
       console.log('User creation failed');
@@ -73,11 +71,11 @@ const Signup = () => {
   
   return (
     <>
-    <div className=" bg-gradient-to-t from-[#170a58]/0 to-[#10015da4] flex items-center justify-center px-4 py-28 min-h-screen">
+    <div className=" bg-gradient-to-t from-[#0a0a0a] via-[#0f111a] to-[#0d1117] flex items-center justify-center px-4 py-28 min-h-screen">
     <Navbar />
       <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 text-white rounded-2xl shadow-2xl p-8 sm:p-10">
         <h2 className="text-3xl font-bold text-center mb-2">Create an Account</h2>
-        <p className="text-sm text-gray-400 text-center mb-8">Join <span className="text-indigo-400 font-medium">SaaSFlow</span> today</p>
+        <p className="text-sm text-gray-400 text-center mb-8">Join <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-medium">SaaSFlow</span> today</p>
         
         <form className="space-y-6">
           <div>
@@ -128,7 +126,7 @@ const Signup = () => {
           <button
             disabled
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 transition duration-300 text-white font-semibold py-3 rounded-lg shadow-md"
+            className="w-full bg-gradient-to-r from-purple-400 to-pink-500 transition duration-300 text-white font-semibold py-3 rounded-lg shadow-md"
           >
             Sign Up
           </button>
@@ -136,7 +134,7 @@ const Signup = () => {
               <button
               onClick={handleSubmit}
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 transition duration-300 text-white font-semibold py-3 rounded-lg shadow-md"
+              className="w-full bg-gradient-to-r from-purple-400 to-pink-500 transition duration-300 text-white font-semibold py-3 rounded-lg shadow-md"
             >
               Sign Up
             </button>
@@ -146,7 +144,7 @@ const Signup = () => {
 
         <div className="text-sm text-center text-gray-400 mt-6">
           Already have an account?{' '}
-          <a href="/signin" className="text-indigo-400 hover:underline">
+          <a href="/signin" className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
             Sign in
           </a>
         </div>

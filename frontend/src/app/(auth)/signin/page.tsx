@@ -41,19 +41,16 @@ const Signin = () => {
       console.log(response);
       if(response.status === 200){
         console.log('User created successfully');
-        const signupSuccess = () => toast(`${response.data.user.fullName?.firstName} ,Welcome back to SaaSFlow`);
-        signupSuccess();
+        toast.success(`${response.data.user.fullName?.firstName} ,Welcome back to SaaSFlow`);
         setUser(response.data.user);
         localStorage.setItem('token', response.data.token);
         console.log("context",user);
-        setTimeout(() => {
           if(response.data.user.isVerified === true){
             router.push('/');
           }
           else{
             router.push(`/otpVerify`);
           }
-        },2000);
       }else{
         console.log('User creation failed');
         toast.error('User creation failed');
@@ -67,11 +64,11 @@ const Signin = () => {
 
   return (
     <>
-    <div className="min-h-screen bg-gradient-to-t from-[#170a58]/0 to-[#10015da4] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-t from-[#0a0a0a] via-[#0f111a] to-[#0d1117] flex items-center justify-center px-4">
      <Navbar />
      <div className="w-full max-w-md bg-white/5 backdrop-blur-md border border-white/10 text-white rounded-2xl shadow-2xl p-8 sm:p-10">
         <h2 className="text-3xl font-bold text-center mb-2">Welcome Back 👋</h2>
-        <p className="text-sm text-gray-400 text-center mb-8">Sign in to continue to <span className="text-indigo-400 font-medium">SaaSFlow</span></p>
+        <p className="text-sm text-gray-400 text-center mb-8">Sign in to continue to <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent font-medium">SaaSFlow</span></p>
         
         <form className="space-y-6">
           <div>
@@ -100,7 +97,7 @@ const Signin = () => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 transition duration-300 text-white font-semibold py-3 rounded-lg shadow-md"
+            className="w-full bg-gradient-to-r from-purple-400 to-pink-500 transition duration-300 text-white font-semibold py-3 rounded-lg shadow-md"
             onClick={handleSubmit}
           >
             Sign In
@@ -109,7 +106,7 @@ const Signin = () => {
 
         <div className="text-sm text-center text-gray-400 mt-6">
           Don’t have an account?{' '}
-          <a href="/signup" className="text-indigo-400 hover:underline">
+          <a href="/signup" className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
             Sign up
           </a>
         </div>

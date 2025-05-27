@@ -50,7 +50,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           <div className="col-span-2">
             <a href="#" className="inline-block">
-              <span className="text-3xl font-bold text-[#3818d6]">SaaSFlow</span>
+              <span className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">SaaSFlow</span>
             </a>
             <p className="mt-4 text-gray-400 max-w-xs">
               Build, deploy, and scale your SaaS application with our AI-powered platform.

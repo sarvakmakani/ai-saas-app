@@ -28,6 +28,9 @@ export default function VerifyOtp() {
         email: user.email,
         otp: otp,
       }
+
+      try{
+
       const response = await axios.post('http://localhost:5000/user/verifyOtp', existingUser);
       console.log(response);
       if (response.status === 200) {
@@ -37,6 +40,11 @@ export default function VerifyOtp() {
       } else {
         console.log('User creation failed');
         toast.error('User creation failed');
+      }
+
+      }catch(error){
+        console.log(error);
+        toast.error('Enter valid OTP');
       }
     };
   return (

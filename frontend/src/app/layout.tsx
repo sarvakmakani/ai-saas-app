@@ -62,7 +62,6 @@ export default function RootLayout({
           theme="dark"
         />
       </UserProvider>
-
       </body>
     </html>
   );
